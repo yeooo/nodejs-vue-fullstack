@@ -6,7 +6,7 @@
  * @Autor: 庄佩芬
  * @Date: 2019-09-02 16:28:30
  * @LastEditors: 庄佩芬
- * @LastEditTime: 2019-10-08 15:28:54
+ * @LastEditTime: 2019-10-08 16:59:38
  */
 module.exports = app => {
   const express = require('express')
@@ -78,16 +78,28 @@ module.exports = app => {
     router)
 
   const multer = require('multer')
+  const MAO = require('multer-aliyun-oss');
   // 目标地址
+  // const upload = multer({
+  //   dest: __dirname + '/../../upload'
+  // })
   const upload = multer({
-    dest: __dirname + '/../../upload'
+    storage: MAO({
+      config: {
+        region: 'oss-cn-beijing',
+        accessKeyId: 'LTAI4FsbXgP78pVmThEedN7y',
+        accessKeySecret: 'NpwmNTAJSG8OtASiGXaw4OJ3kz6Esx',
+        bucket: 'node-vue-fullstack'
+      }
+    })
   })
   //express本身无法接受文件上传的数据，需要一个中间件来处理上传文件 multer
   // upload.single接受单个上传文件
   // file是前端通过file字段传输数据给服务器
   app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res) => {
     const file = req.file;
-    file.url = `http://47.107.167.119/upload/${file.filename}`
+    // 已经配置好了阿里云oss 文件上传就是oss 所以不需要指定url
+    // file.url = `http://47.107.167.119/upload/${file.filename}`
 
     res.status(200).send({
       msg: '上传成功！',
