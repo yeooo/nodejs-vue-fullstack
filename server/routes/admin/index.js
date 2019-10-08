@@ -6,7 +6,7 @@
  * @Autor: 庄佩芬
  * @Date: 2019-09-02 16:28:30
  * @LastEditors: 庄佩芬
- * @LastEditTime: 2019-09-18 17:42:35
+ * @LastEditTime: 2019-10-08 15:28:54
  */
 module.exports = app => {
   const express = require('express')
@@ -87,7 +87,7 @@ module.exports = app => {
   // file是前端通过file字段传输数据给服务器
   app.post('/admin/api/upload', authMiddleware(), upload.single('file'), async (req, res) => {
     const file = req.file;
-    file.url = `http://localhost:3001/upload/${file.filename}`
+    file.url = `http://47.107.167.119/upload/${file.filename}`
 
     res.status(200).send({
       msg: '上传成功！',
